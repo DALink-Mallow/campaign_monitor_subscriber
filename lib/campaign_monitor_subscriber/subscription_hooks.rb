@@ -6,38 +6,24 @@ module CampaignMonitorSubscriber
     extend ActiveSupport::Concern
 
     included do
-      require 'logger'
-      @@log = Logger.new('log/cm_subscriber.log')
 
       after_create do |record|
-        @@log.debug "\n* Adding '#{record.cms_email}' to CM"
-
-        begin
-          CreateSend::Subscriber.add(
-            cms_config.list_id,
-            record.cms_email,
-            record.cms_name,
-            [record.cms_custom_fields],
-            true
-          )
-        rescue CreateSend::CreateSendError => err
-          @@log.info err.message
-        end
+        CreateSend::Subscriber.add(
+          cms_config.list_id,
+          record.cms_email,
+          record.cms_name,
+          [record.cms_custom_fields],
+          true
+        )
       end
 
 
       after_destroy do |record|
-        @@log.debug "\n* Removing '#{record.cms_email}' from CM"
-
-        begin
-          s = CreateSend::Subscriber.new(
-            cms_config.list_id,
-            record.cms_email
-          )
-          s.unsubscribe
-        rescue CreateSend::CreateSendError => err
-          @@log.info err.message
-        end
+        s = CreateSend::Subscriber.new(
+          cms_config.list_id,
+          record.cms_email
+        )
+        s.unsubscribe
       end
 
     end
