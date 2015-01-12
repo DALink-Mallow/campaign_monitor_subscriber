@@ -3,7 +3,7 @@
 module CampaignMonitorSubscriber
   module InstanceMethods
     def cms_custom_fields
-      cms_config.custom_fields.inject({}) { |h, (k, v)| h[k] = send(v); h }
+      cms_config.custom_fields.map { |k, v| { Key: k, Value: send(v) } }
     end
 
     def cms_email
@@ -35,7 +35,7 @@ module CampaignMonitorSubscriber
         cms_config.list_id,
         cms_email,
         cms_name,
-        [cms_custom_fields],
+        cms_custom_fields,
         true
       )
     end
@@ -45,7 +45,7 @@ module CampaignMonitorSubscriber
     end
 
     def update_subscriber
-      subscriber.update cms_email, cms_name, [cms_custom_fields], true
+      subscriber.update cms_email, cms_name, cms_custom_fields, true
     end
 
   end
