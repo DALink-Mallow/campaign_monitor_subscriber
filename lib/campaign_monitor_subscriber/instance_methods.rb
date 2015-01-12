@@ -26,8 +26,7 @@ module CampaignMonitorSubscriber
     end
 
     def subscribed?
-      CreateSend::Subscriber.get(cms_config.list_id, cms_email).State == 'Active'
-      rescue false
+      CreateSend::Subscriber.get(cms_config.list_id, cms_email).State == 'Active' rescue false
     end
 
     def create_subscriber
