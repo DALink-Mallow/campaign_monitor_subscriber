@@ -7,12 +7,11 @@ module CampaignMonitorSubscriber
 
     included do
 
-      after_create do |record|
+      after_create(callback_conditionals) do |record|
         create_subscriber
       end
 
-
-      after_destroy do |record|
+      after_destroy(callback_conditionals) do |record|
         destroy_subscriber
       end
 

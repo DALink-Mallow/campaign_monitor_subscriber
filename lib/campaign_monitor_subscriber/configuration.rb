@@ -15,12 +15,21 @@ module CampaignMonitorSubscriber
 
       # Extract config from the options supplied to #subscribe_me_using.
       cms_config.email_field = email_field
+
       cms_config.name_field = options.delete('name')
+
+      cms_config.callback_if = options.delete('if')
+      cms_config.callback_unless = options.delete('unless')
+
       cms_config.custom_fields = options
     end
 
     def cms_config
-      @cms_config ||= CMSConfig.new.config     
+      @cms_config ||= CMSConfig.new.config
+    end
+
+    def callback_conditionals
+      { if: cms_config.callback_if, unless: cms_config.calback_unless }.delete_if { |k, v| v.nil? }
     end
 
     # We namespace the AS::config in case this
