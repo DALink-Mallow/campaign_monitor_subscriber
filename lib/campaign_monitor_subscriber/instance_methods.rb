@@ -10,6 +10,10 @@ module CampaignMonitorSubscriber
       send(cms_config.email_field)
     end
 
+    def cms_email_was
+      send("#{cms_config.email_field}_was")
+    end
+
     def cms_name
       cms_config.name_field ? send(cms_config.name_field) : cms_email
     end
@@ -21,7 +25,7 @@ module CampaignMonitorSubscriber
     def subscriber
       CreateSend::Subscriber.new(
         cms_config.list_id,
-        cms_email
+        cms_email_was
       )
     end
 
