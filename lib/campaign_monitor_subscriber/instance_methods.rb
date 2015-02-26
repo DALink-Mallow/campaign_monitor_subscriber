@@ -25,7 +25,7 @@ module CampaignMonitorSubscriber
     def subscriber
       CreateSend::Subscriber.new(
         cms_config.list_id,
-        cms_email_was
+        cms_email_was.presence || cms_email
       )
     end
 
