@@ -41,14 +41,20 @@ module CampaignMonitorSubscriber
         cms_custom_fields,
         true
       )
+    rescue CreateSend::BadRequest => e
+      raise e unless cms_config.ignore_exceptions
     end
 
     def destroy_subscriber
       subscriber.unsubscribe
+    rescue CreateSend::BadRequest => e
+      raise e unless cms_config.ignore_exceptions
     end
 
     def update_subscriber
       subscriber.update cms_email, cms_name, cms_custom_fields, true
+    rescue CreateSend::BadRequest => e
+      raise e unless cms_config.ignore_exceptions
     end
 
   end

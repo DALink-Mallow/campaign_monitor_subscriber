@@ -21,6 +21,8 @@ module CampaignMonitorSubscriber
       cms_config.callback_if = options.delete('if')
       cms_config.callback_unless = options.delete('unless')
 
+      cms_config.ignore_exceptions = !!options.delete('ignore_exceptions')
+
       cms_config.custom_fields = options
     end
 
